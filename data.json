@@ -90,7 +90,7 @@
     { "id": "s2", "platform": "Discord", "label": "Helnyria", "url": "https://canary.discord.com/users/437187116003491841", "icon": "fa-brands fa-discord" },
     { "id": "s3", "platform": "Steam", "label": "Helnyria", "url": "https://steamcommunity.com/id/helnyria/", "icon": "fa-brands fa-steam" },
     { "id": "s4", "platform": "RetroAchievements", "label": "Helnyria", "url": "https://retroachievements.org/user/helnyria", "icon": "fa-solid fa-trophy" },
-    { "id": "s5", "platform": "MyAnimeList", "label": "Helnyria", "url": "https://myanimelist.net/profile/Helnyria", "icon": "fa-solid fa-list-check" },
+    { "id": "s5", "platform": "MyAnimeList", "label": "Helnyria", "url": "https://myanimelist.net/profile/Helnyria", "icon": "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-5 h-5 fill-current\"><path d=\"M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.92 18.067h-2.56V6.933h2.56v11.134zm5.12 0h-2.56V5.933h2.56v12.134zm-7.68 0H6.933V9.333h2.587v8.734z\"/></svg>" },
     { "id": "s6", "platform": "Backloggd", "label": "Helnyria", "url": "https://bckl.gg/xl0W", "icon": "fa-solid fa-gamepad" }
   ]
 }
