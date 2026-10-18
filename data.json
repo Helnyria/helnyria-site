@@ -1,0 +1,96 @@
+{
+  "profile": {
+    "name": "Helnyria",
+    "title": "// GÖZÜPEK YAZILIMCI & OYUN GELİŞTİRİCİ",
+    "bio": "Sessizliğin ve bitmeyen yağmurun arasında kaybolmuş bir ruh... Sisli sokaklarda kodlama, karanlık atmosferik oyun tasarımı ve retro dijital sanat üretiyorum.",
+    "avatar": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400&auto=format&fit=crop",
+    "audioPath": "nottomorrow.mp3"
+  },
+  "specsCategories": [
+    {
+      "id": "cat_monitors",
+      "title": "Monitörler & Ekran Kurulumu",
+      "icon": "fa-desktop",
+      "items": [
+        { "label": "Ana Monitör", "val": "MSI MPG 271QRX 27\" 2K QD-OLED 360Hz" },
+        { "label": "2. Monitör", "val": "MSI G274QPF E2 27\" 2K IPS 180Hz" },
+        { "label": "3. Monitör", "val": "Acer EG241Y P 24\" FHD IPS 144Hz" },
+        { "label": "1. Monitör Kolu", "val": "North Bayou H100" },
+        { "label": "2. Monitör Kolu", "val": "2x North Bayou F80" }
+      ]
+    },
+    {
+      "id": "cat_hardware",
+      "title": "Kasa & Ana Donanım",
+      "icon": "fa-microchip",
+      "items": [
+        { "label": "Anakart", "val": "ASUS Prime B650-Plus" },
+        { "label": "Bellek (RAM)", "val": "2x16GB Corsair Vengeance 6000MHz CL36 DDR5" },
+        { "label": "Ekran Kartı (GPU)", "val": "Sapphire Nitro+ RX 7800 XT" },
+        { "label": "Güç Kaynağı (PSU)", "val": "FSP VITA GM1000W 1000W 80+ Gold" },
+        { "label": "İşlemci (CPU)", "val": "AMD Ryzen 5 7500F" },
+        { "label": "Kasa", "val": "Gamepower Warcry" },
+        { "label": "Kasa Fanları", "val": "6x Thermalright TL-C12C-S ARGB Black" },
+        { "label": "Sıvı Soğutma", "val": "Bitfenix Cube 360" }
+      ]
+    },
+    {
+      "id": "cat_storage",
+      "title": "Depolama Sürücüleri",
+      "icon": "fa-hard-drive",
+      "items": [
+        { "label": "Ana SSD (NVMe)", "val": "Kingston Renegade 1TB (7300/6000 MB/s)" },
+        { "label": "2. SSD (NVMe)", "val": "INTENSO 500GB NVMe" },
+        { "label": "Depolama HDD", "val": "Seagate BarraCuda 2TB (ST2000DM008)" }
+      ]
+    },
+    {
+      "id": "cat_peripherals",
+      "title": "Klavye & Çevre Birimleri",
+      "icon": "fa-keyboard",
+      "items": [
+        { "label": "Çalışma Masası", "val": "Karr Office O-Flex Duo" },
+        { "label": "Fare (Mouse)", "val": "ATK Blazing Sky X1 Ultra White" },
+        { "label": "Klavye", "val": "Darmoshark TOP75" },
+        { "label": "Mikrofon", "val": "Lastvoice BM800BT" },
+        { "label": "Oyuncu Koltuğu", "val": "Hawk Fab v6 Stone" }
+      ]
+    },
+    {
+      "id": "cat_controllers",
+      "title": "Gamepad & Kontrolcüler",
+      "icon": "fa-gamepad",
+      "items": [
+        { "label": "Ana Gamepad", "val": "Flydigi Apex 4 Elite" },
+        { "label": "İkincil Gamepad", "val": "8BitDo Ultimate C" }
+      ]
+    },
+    {
+      "id": "cat_audio",
+      "title": "Ses & Kulaklıklar",
+      "icon": "fa-headphones",
+      "items": [
+        { "label": "Ana Kulaklık", "val": "Skullcandy Crusher Evo Black" },
+        { "label": "Kablosuz Kulaklık", "val": "Anker Soundcore Liberty 4 NC" }
+      ]
+    },
+    {
+      "id": "cat_infrastructure",
+      "title": "Güç & Ağ Altyapısı",
+      "icon": "fa-plug",
+      "items": [
+        { "label": "Bluetooth Adaptör", "val": "TP-Link UB500" },
+        { "label": "Güç Kaynağı (UPS)", "val": "Powerful SLE-1500 1500VA Line Interactive" },
+        { "label": "Modem / Router", "val": "Keenetic Hopper DSL (KN-3610)" }
+      ]
+    }
+  ],
+  "socials": [
+    { "id": "s1", "platform": "Instagram", "label": "@silent.rest", "url": "https://instagram.com", "icon": "fa-brands fa-instagram" },
+    { "id": "s2", "platform": "Discord", "label": "Helnyria", "url": "copy:Helnyria", "icon": "fa-brands fa-discord" },
+    { "id": "s3", "platform": "Steam", "label": "SilentRest", "url": "https://store.steampowered.com", "icon": "fa-brands fa-steam" },
+    { "id": "s4", "platform": "RetroAchievements", "label": "SilentGamer", "url": "https://retroachievements.org", "icon": "fa-solid fa-trophy" },
+    { "id": "s5", "platform": "MyAnimeList", "label": "MelancholicP", "url": "https://myanimelist.net", "icon": "fa-solid fa-list-check" },
+    { "id": "s6", "platform": "Backloggd", "label": "FoggyGames", "url": "https://backloggd.com", "icon": "fa-solid fa-gamepad" }
+  ]
+}
