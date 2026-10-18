@@ -1,8 +1,8 @@
 {
   "profile": {
     "name": "Helnyria",
-    "title": "// GÖZÜPEK YAZILIMCI & OYUN GELİŞTİRİCİ",
-    "bio": "Sessizliğin ve bitmeyen yağmurun arasında kaybolmuş bir ruh... Sisli sokaklarda kodlama, karanlık atmosferik oyun tasarımı ve retro dijital sanat üretiyorum.",
+    "title": "Herhangi bir adam",
+    "bio": "",
     "avatar": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400&auto=format&fit=crop",
     "audioPath": "nottomorrow.mp3"
   },
@@ -12,7 +12,7 @@
       "title": "Monitörler & Ekran Kurulumu",
       "icon": "fa-desktop",
       "items": [
-        { "label": "Ana Monitör", "val": "MSI MPG 271QRX 27\" 2K QD-OLED 360Hz" },
+        { "label": "1. Monitör", "val": "MSI MPG 271QRX 27\" 2K QD-OLED 360Hz" },
         { "label": "2. Monitör", "val": "MSI G274QPF E2 27\" 2K IPS 180Hz" },
         { "label": "3. Monitör", "val": "Acer EG241Y P 24\" FHD IPS 144Hz" },
         { "label": "1. Monitör Kolu", "val": "North Bayou H100" },
@@ -39,7 +39,7 @@
       "title": "Depolama Sürücüleri",
       "icon": "fa-hard-drive",
       "items": [
-        { "label": "Ana SSD (NVMe)", "val": "Kingston Renegade 1TB (7300/6000 MB/s)" },
+        { "label": "1. SSD (NVMe)", "val": "Kingston Renegade 1TB (7300/6000 MB/s)" },
         { "label": "2. SSD (NVMe)", "val": "INTENSO 500GB NVMe" },
         { "label": "Depolama HDD", "val": "Seagate BarraCuda 2TB (ST2000DM008)" }
       ]
@@ -86,11 +86,11 @@
     }
   ],
   "socials": [
-    { "id": "s1", "platform": "Instagram", "label": "@silent.rest", "url": "https://instagram.com", "icon": "fa-brands fa-instagram" },
-    { "id": "s2", "platform": "Discord", "label": "Helnyria", "url": "copy:Helnyria", "icon": "fa-brands fa-discord" },
-    { "id": "s3", "platform": "Steam", "label": "SilentRest", "url": "https://store.steampowered.com", "icon": "fa-brands fa-steam" },
-    { "id": "s4", "platform": "RetroAchievements", "label": "SilentGamer", "url": "https://retroachievements.org", "icon": "fa-solid fa-trophy" },
-    { "id": "s5", "platform": "MyAnimeList", "label": "MelancholicP", "url": "https://myanimelist.net", "icon": "fa-solid fa-list-check" },
-    { "id": "s6", "platform": "Backloggd", "label": "FoggyGames", "url": "https://backloggd.com", "icon": "fa-solid fa-gamepad" }
+    { "id": "s1", "platform": "Instagram", "label": "ufu.cuk", "url": "https://www.instagram.com/ufu.cuk", "icon": "fa-brands fa-instagram" },
+    { "id": "s2", "platform": "Discord", "label": "Helnyria", "url": "https://canary.discord.com/users/437187116003491841", "icon": "fa-brands fa-discord" },
+    { "id": "s3", "platform": "Steam", "label": "Helnyria", "url": "https://steamcommunity.com/id/helnyria/", "icon": "fa-brands fa-steam" },
+    { "id": "s4", "platform": "RetroAchievements", "label": "Helnyria", "url": "https://retroachievements.org/user/helnyria", "icon": "fa-solid fa-trophy" },
+    { "id": "s5", "platform": "MyAnimeList", "label": "Helnyria", "url": "https://myanimelist.net/profile/Helnyria", "icon": "fa-solid fa-list-check" },
+    { "id": "s6", "platform": "Backloggd", "label": "Helnyria", "url": "https://bckl.gg/xl0W", "icon": "fa-solid fa-gamepad" }
   ]
 }
