@@ -395,7 +395,7 @@
                 { id: "s2", platform: "Discord", label: "Helnyria", url: "copy:Helnyria", icon: "fa-brands fa-discord" },
                 { id: "s3", platform: "Steam", label: "SilentRest", url: "https://store.steampowered.com", icon: "fa-brands fa-steam" },
                 { id: "s4", platform: "RetroAchievements", label: "SilentGamer", url: "https://retroachievements.org", icon: "fa-solid fa-trophy" },
-                { id: "s5", platform: "MyAnimeList", label: "MelancholicP", url: "https://myanimelist.net", icon: "fa-solid fa-list-check" },
+                { id: "s5", platform: "MyAnimeList", label: "MelancholicP", url: "https://myanimelist.net", icon: "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-5 h-5 fill-current\"><path d=\"M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.92 18.067h-2.56V6.933h2.56v11.134zm5.12 0h-2.56V5.933h2.56v12.134zm-7.68 0H6.933V9.333h2.587v8.734z\"/></svg>" },
                 { id: "s6", platform: "Backloggd", label: "FoggyGames", url: "https://backloggd.com", icon: "fa-solid fa-gamepad" }
             ]
         };
@@ -421,7 +421,7 @@
                 appData = FALLBACK_DATA;
             }
 
-            // shukapi.vercel.app/api/stats üzerinden ownerAvatarURL çekme entegrasyonu
+            // Avatar bilgisini shukapi API'sinden ownerAvatarURL ile dinamik çekme
             try {
                 const statsRes = await fetch('https://shukapi.vercel.app/api/stats');
                 if (statsRes.ok) {
@@ -826,10 +826,14 @@
                 const btn = document.createElement('div');
                 btn.className = "sh-card p-4 rounded-xl flex items-center justify-between group cursor-pointer transition-all duration-300";
 
+                const iconHtml = s.icon.startsWith('<svg') 
+                    ? s.icon 
+                    : `<i class="${s.icon} text-lg"></i>`;
+
                 btn.innerHTML = `
                     <div class="flex items-center gap-3.5">
                         <div class="w-10 h-10 rounded-lg bg-black/20 border border-white/10 flex items-center justify-center text-stone-300 transition-all">
-                            <i class="${s.icon} text-lg"></i>
+                            ${iconHtml}
                         </div>
                         <div>
                             <div class="text-sm font-cinzel font-bold text-stone-200 transition">${s.platform}</div>
