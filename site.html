@@ -130,7 +130,6 @@
             animation: melancholicAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Scary Eye Portal Animation */
         @keyframes scaryEyePulse {
             0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(184, 74, 57, 0.5)); opacity: 0.85; }
             50% { transform: scale(1.12); filter: drop-shadow(0 0 22px rgba(255, 50, 50, 0.9)); opacity: 1; }
@@ -259,7 +258,8 @@
         <!-- Specs Accordion Section -->
         <section class="mb-12">
             <div class="sh-card rounded-xl overflow-hidden border border-white/10">
-                <div class="p-3.5 sm:p-4 flex items-center justify-between text-left group">
+                <!-- Mobil Uyumluluk İçin Esnek ve Alt Alta Yapı (flex-col sm:flex-row) -->
+                <div class="p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left group">
                     <button id="btnToggleSpecs" class="flex items-center gap-3 flex-1 cursor-pointer text-left min-w-0 pr-2">
                         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-black/20 border border-white/10 flex items-center justify-center text-stone-300 shrink-0">
                             <i class="fa-solid fa-microchip text-sm sm:text-base"></i>
@@ -272,7 +272,7 @@
                         </div>
                     </button>
                     
-                    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                    <div class="flex items-center justify-end gap-2 sm:gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5">
                         <button id="btnToggleAllSubcats" type="button" title="Tüm Donanım Kategorilerini Aç / Kapat" class="text-[11px] sm:text-xs font-mono px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/20 hover:bg-black/40 border border-white/10 text-stone-300 transition cursor-pointer flex items-center gap-1.5">
                             <i class="fa-solid fa-layer-group text-[11px] text-stone-400"></i>
                             <span id="btnToggleAllText">Tümünü Aç</span>
@@ -421,7 +421,6 @@
                 appData = FALLBACK_DATA;
             }
 
-            // Dinamik Discord Avatarı Entegrasyonu (shukapi.vercel.app/api/stats)
             try {
                 const statsRes = await fetch('https://shukapi.vercel.app/api/stats');
                 if (statsRes.ok) {
@@ -976,7 +975,7 @@
                 allSubcatsOpen = !allSubcatsOpen;
 
                 contents.forEach(c => {
-                    if (allSubcatsOpen) c.classList.add('open');
+                    if (allSubcatsOpen) c.classList.0 = c.classList.add('open');
                     else c.classList.remove('open');
                 });
 
