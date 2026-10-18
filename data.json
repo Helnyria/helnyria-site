@@ -80,7 +80,7 @@
       "icon": "fa-plug",
       "items": [
         { "label": "Bluetooth Adaptör", "val": "TP-Link UB500" },
-        { "label": "Güç Kaynağı (UPS)", "val": "Powerful SLE-1500 1500VA Line Interactive" },
+        { "label": "Kesintisiz Güç Kaynağı (UPS)", "val": "Powerful SLE-1500 1500VA Line Interactive" },
         { "label": "Modem / Router", "val": "Keenetic Hopper DSL (KN-3610)" }
       ]
     }
