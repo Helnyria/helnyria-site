@@ -130,6 +130,7 @@
             animation: melancholicAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+        /* Scary Eye Portal Animation */
         @keyframes scaryEyePulse {
             0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(184, 74, 57, 0.5)); opacity: 0.85; }
             50% { transform: scale(1.12); filter: drop-shadow(0 0 22px rgba(255, 50, 50, 0.9)); opacity: 1; }
@@ -163,8 +164,8 @@
     <audio id="bgMusic" loop preload="auto"></audio>
 
     <!-- Interactive Portal Gate Overlay (Scary Eye Only) -->
-    <div id="gunsEnterOverlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-stone-200 transition-all duration-700 select-none cursor-pointer">
-        <div id="enterPortalBtn" class="scary-eye-portal flex items-center justify-center p-4">
+    <div id="gunsEnterOverlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-stone-200 transition-all duration-700 select-none">
+        <div onclick="unlockAudio()" class="scary-eye-portal flex items-center justify-center p-4 cursor-pointer">
             <i class="fa-solid fa-eye text-6xl sm:text-7xl text-red-700 hover:text-red-500 transition duration-300"></i>
         </div>
     </div>
@@ -258,8 +259,7 @@
         <!-- Specs Accordion Section -->
         <section class="mb-12">
             <div class="sh-card rounded-xl overflow-hidden border border-white/10">
-                <!-- Mobil Çakışmayı Önleyen Esnek Başlık Yapısı -->
-                <div class="p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left group">
+                <div class="p-3.5 sm:p-4 flex items-center justify-between text-left group">
                     <button id="btnToggleSpecs" class="flex items-center gap-3 flex-1 cursor-pointer text-left min-w-0 pr-2">
                         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-black/20 border border-white/10 flex items-center justify-center text-stone-300 shrink-0">
                             <i class="fa-solid fa-microchip text-sm sm:text-base"></i>
@@ -272,7 +272,7 @@
                         </div>
                     </button>
                     
-                    <div class="flex items-center justify-end gap-2 sm:gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5">
+                    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                         <button id="btnToggleAllSubcats" type="button" title="Tüm Donanım Kategorilerini Aç / Kapat" class="text-[11px] sm:text-xs font-mono px-2.5 sm:px-3 py-1.5 rounded-lg bg-black/20 hover:bg-black/40 border border-white/10 text-stone-300 transition cursor-pointer flex items-center gap-1.5">
                             <i class="fa-solid fa-layer-group text-[11px] text-stone-400"></i>
                             <span id="btnToggleAllText">Tümünü Aç</span>
@@ -395,7 +395,7 @@
                 { id: "s2", platform: "Discord", label: "Helnyria", url: "copy:Helnyria", icon: "fa-brands fa-discord" },
                 { id: "s3", platform: "Steam", label: "SilentRest", url: "https://store.steampowered.com", icon: "fa-brands fa-steam" },
                 { id: "s4", platform: "RetroAchievements", label: "SilentGamer", url: "https://retroachievements.org", icon: "fa-solid fa-trophy" },
-                { id: "s5", platform: "MyAnimeList", label: "MelancholicP", url: "https://myanimelist.net", icon: "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-5 h-5 fill-current\"><path d=\"M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.92 18.067h-2.56V6.933h2.56v11.134zm5.12 0h-2.56V5.933h2.56v12.134zm-7.68 0H6.933V9.333h2.587v8.734z\"/></svg>" },
+                { id: "s5", platform: "MyAnimeList", label: "MelancholicP", url: "https://myanimelist.net", icon: "fa-solid fa-list-check" },
                 { id: "s6", platform: "Backloggd", label: "FoggyGames", url: "https://backloggd.com", icon: "fa-solid fa-gamepad" }
             ]
         };
@@ -421,7 +421,7 @@
                 appData = FALLBACK_DATA;
             }
 
-            // Avatar bilgisini shukapi API'sinden ownerAvatarURL ile dinamik çekme
+            // Dinamik Discord Avatarı Entegrasyonu (shukapi.vercel.app/api/stats)
             try {
                 const statsRes = await fetch('https://shukapi.vercel.app/api/stats');
                 if (statsRes.ok) {
@@ -456,7 +456,7 @@
             if (overlay) {
                 overlay.style.opacity = '0';
                 overlay.style.pointerEvents = 'none';
-                setTimeout(() => { overlay.style.display = 'none'; }, 700);
+                setTimeout(() => { overlay.style.display = 'none'; }, 1000);
             }
 
             const btnToggleSettings = document.getElementById('btnToggleSettings');
@@ -477,9 +477,7 @@
                     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
                     if (AudioContextClass) audioCtx = new AudioContextClass();
                 }
-                if (audioCtx && audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             } catch(e) {}
 
             try { startProceduralRainAudio(); } catch(e) {}
@@ -817,7 +815,7 @@
             });
         }
 
-        function renderSocials() {
+       function renderSocials() {
             const container = document.getElementById('socialsContainer');
             if (!container || !appData) return;
             container.innerHTML = '';
@@ -826,6 +824,7 @@
                 const btn = document.createElement('div');
                 btn.className = "sh-card p-4 rounded-xl flex items-center justify-between group cursor-pointer transition-all duration-300";
 
+                // İkonun SVG mi yoksa FontAwesome sınıfı mı olduğunu kontrol et
                 const iconHtml = s.icon.startsWith('<svg') 
                     ? s.icon 
                     : `<i class="${s.icon} text-lg"></i>`;
@@ -869,12 +868,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             initRainCanvas();
             loadData();
-
-            // Portal Giriş Tıklama Dinleyicileri
-            const enterBtn = document.getElementById('enterPortalBtn');
-            enterBtn?.addEventListener('click', unlockAudio);
-            const overlay = document.getElementById('gunsEnterOverlay');
-            overlay?.addEventListener('click', unlockAudio);
 
             const settingsDropdown = document.getElementById('settingsDropdown');
             const btnToggleSettings = document.getElementById('btnToggleSettings');
