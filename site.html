@@ -202,14 +202,26 @@
             </div>
 
             <!-- Rain Volume Slider -->
-            <div class="flex items-center gap-2.5">
-                <i class="fa-solid fa-cloud-rain text-stone-400 text-xs w-4 text-center"></i>
+            <div class="flex flex-col gap-1">
+                <div class="flex items-center justify-between text-[11px] text-stone-400 font-mono">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-rain w-4 text-center"></i>
+                        <span>Yağmur Sesi</span>
+                    </div>
+                    <span id="rainVolText">40%</span>
+                </div>
                 <input id="rainVolumeSlider" type="range" min="0" max="1" step="0.01" value="0.4" class="w-full accent-stone-400 cursor-pointer h-1.5 bg-stone-800 rounded-lg" title="Yağmur Sesi Seviyesi">
             </div>
 
             <!-- Music Volume Slider -->
-            <div class="flex items-center gap-2.5">
-                <i class="fa-solid fa-music text-stone-400 text-xs w-4 text-center"></i>
+            <div class="flex flex-col gap-1">
+                <div class="flex items-center justify-between text-[11px] text-stone-400 font-mono">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-music w-4 text-center"></i>
+                        <span>Müzik Sesi</span>
+                    </div>
+                    <span id="musicVolText">60%</span>
+                </div>
                 <input id="musicVolumeSlider" type="range" min="0" max="1" step="0.01" value="0.6" class="w-full accent-stone-400 cursor-pointer h-1.5 bg-stone-800 rounded-lg" title="Müzik Sesi Seviyesi">
             </div>
 
@@ -796,8 +808,10 @@
             document.getElementById('btnPlayPauseModal')?.addEventListener('click', toggleMusic);
             
             const rainSlider = document.getElementById('rainVolumeSlider');
+            const rainVolText = document.getElementById('rainVolText');
             rainSlider?.addEventListener('input', (e) => {
                 const val = parseFloat(e.target.value);
+                if (rainVolText) rainVolText.innerText = `${Math.round(val * 100)}%`;
                 if (rainGainNode && audioCtx) {
                     const targetVal = val === 0 ? 0.0 : val;
                     rainGainNode.gain.setValueAtTime(targetVal, audioCtx.currentTime);
@@ -805,8 +819,10 @@
             });
 
             const musicSlider = document.getElementById('musicVolumeSlider');
+            const musicVolText = document.getElementById('musicVolText');
             musicSlider?.addEventListener('input', (e) => {
                 const val = parseFloat(e.target.value);
+                if (musicVolText) musicVolText.innerText = `${Math.round(val * 100)}%`;
                 const bgMusic = document.getElementById('bgMusic');
                 if (bgMusic) bgMusic.volume = val;
             });
