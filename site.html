@@ -315,7 +315,7 @@
         let lightningTimer = null;
         let isUnlocked = false;
 
-        async function loadData() {
+       async function loadData() {
             try {
                 const response = await fetch('data.json');
                 if (!response.ok) throw new Error("data.json yüklenemedi");
@@ -326,20 +326,29 @@
                 return;
             }
 
-           
+          
             try {
                 const statsRes = await fetch('https://shukapi.vercel.app/api/stats');
                 if (statsRes.ok) {
                     const statsData = await statsRes.json();
                     if (statsData && statsData.ownerAvatarURL && appData.profile) {
                         appData.profile.avatar = statsData.ownerAvatarURL;
+
+                     
+                        let favicon = document.querySelector("link[rel*='icon']");
+                        if (!favicon) {
+                            favicon = document.createElement('link');
+                            favicon.rel = 'icon';
+                            document.head.appendChild(favicon);
+                        }
+                        favicon.href = statsData.ownerAvatarURL;
+                      
                     }
                 }
             } catch (err) {}
 
             renderUI();
         }
-
         function showToast(msg) {
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toastMsg');
@@ -855,7 +864,7 @@
                     if (chaosBtnText) chaosBtnText.innerText = "Sakın Basmayın";
                     document.documentElement.classList.remove('storm-panic-border');
                     clearTimeout(stormChaosTimer);
-                    showToast("Sistem fırtınadan kurtarıldı.");
+                //    showToast("Sistem fırtınadan kurtarıldı.");
                     if (lightningEnabled) scheduleNextLightning();
                 }
             });
