@@ -163,8 +163,8 @@
     <audio id="bgMusic" loop preload="auto"></audio>
 
     <!-- Interactive Portal Gate Overlay (Scary Eye Only) -->
-    <div id="gunsEnterOverlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-stone-200 transition-all duration-700 select-none">
-        <div onclick="unlockAudio()" class="scary-eye-portal flex items-center justify-center p-4 cursor-pointer">
+    <div id="gunsEnterOverlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-stone-200 transition-all duration-700 select-none cursor-pointer">
+        <div id="enterPortalBtn" class="scary-eye-portal flex items-center justify-center p-4">
             <i class="fa-solid fa-eye text-6xl sm:text-7xl text-red-700 hover:text-red-500 transition duration-300"></i>
         </div>
     </div>
@@ -258,7 +258,7 @@
         <!-- Specs Accordion Section -->
         <section class="mb-12">
             <div class="sh-card rounded-xl overflow-hidden border border-white/10">
-                <!-- Mobil Uyumluluk İçin Esnek ve Alt Alta Yapı (flex-col sm:flex-row) -->
+                <!-- Mobil Çakışmayı Önleyen Esnek Başlık Yapısı -->
                 <div class="p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left group">
                     <button id="btnToggleSpecs" class="flex items-center gap-3 flex-1 cursor-pointer text-left min-w-0 pr-2">
                         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-black/20 border border-white/10 flex items-center justify-center text-stone-300 shrink-0">
@@ -421,6 +421,7 @@
                 appData = FALLBACK_DATA;
             }
 
+            // shukapi.vercel.app/api/stats üzerinden ownerAvatarURL çekme entegrasyonu
             try {
                 const statsRes = await fetch('https://shukapi.vercel.app/api/stats');
                 if (statsRes.ok) {
@@ -455,7 +456,7 @@
             if (overlay) {
                 overlay.style.opacity = '0';
                 overlay.style.pointerEvents = 'none';
-                setTimeout(() => { overlay.style.display = 'none'; }, 1000);
+                setTimeout(() => { overlay.style.display = 'none'; }, 700);
             }
 
             const btnToggleSettings = document.getElementById('btnToggleSettings');
@@ -476,7 +477,9 @@
                     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
                     if (AudioContextClass) audioCtx = new AudioContextClass();
                 }
-                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
             } catch(e) {}
 
             try { startProceduralRainAudio(); } catch(e) {}
@@ -863,6 +866,12 @@
             initRainCanvas();
             loadData();
 
+            // Portal Giriş Tıklama Dinleyicileri
+            const enterBtn = document.getElementById('enterPortalBtn');
+            enterBtn?.addEventListener('click', unlockAudio);
+            const overlay = document.getElementById('gunsEnterOverlay');
+            overlay?.addEventListener('click', unlockAudio);
+
             const settingsDropdown = document.getElementById('settingsDropdown');
             const btnToggleSettings = document.getElementById('btnToggleSettings');
 
@@ -975,7 +984,7 @@
                 allSubcatsOpen = !allSubcatsOpen;
 
                 contents.forEach(c => {
-                    if (allSubcatsOpen) c.classList.0 = c.classList.add('open');
+                    if (allSubcatsOpen) c.classList.add('open');
                     else c.classList.remove('open');
                 });
 
