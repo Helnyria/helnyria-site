@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sessizliğin Sesleri | Melankolik Portfolyo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Special+Elite&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#000000',
+                        rust: '#8b3a2b',
+                        rustlight: '#b84a39',
+                        fog: '#64748b'
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        grunge: ['Special Elite', 'monospace'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #d1d5db;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .crt-overlay {
+            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+            background-size: 100% 3px;
+            pointer-events: none;
+        }
+
+        .vignette {
+            box-shadow: inset 0 0 120px rgba(0,0,0,0.95);
+            pointer-events: none;
+        }
+
+        @keyframes fogMove {
+            0% { transform: translate3d(-5%, -3%, 0); opacity: 0.15; }
+            50% { transform: translate3d(5%, 3%, 0); opacity: 0.28; }
+            100% { transform: translate3d(-5%, -3%, 0); opacity: 0.15; }
+        }
+
+        .animated-fog {
+            background: radial-gradient(circle, rgba(100, 116, 139, 0.08) 0%, rgba(0,0,0,0) 70%);
+            animation: fogMove 25s infinite ease-in-out;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        /* Ultra Transparent Glassmorphism Cards */
+        .sh-card {
+            background: rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s ease;
+        }
+
+        .sh-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .specs-accordion {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, margin 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .specs-accordion.open {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            margin-top: 0.75rem;
+            pointer-events: auto;
+        }
+
+        .specs-accordion-inner {
+            overflow: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #241310;
+            border-radius: 3px;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(139, 58, 43, 0.3), inset 0 0 10px rgba(139, 58, 43, 0.2); }
+            50% { box-shadow: 0 0 28px rgba(184, 74, 57, 0.6), inset 0 0 18px rgba(184, 74, 57, 0.4); }
+        }
+
+        .avatar-pulse {
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+
+        @keyframes melancholicAppear {
+            0% { opacity: 0; filter: blur(25px); transform: scale(1.03); }
+            100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+        }
+
+        .melancholic-appear {
+            animation: melancholicAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Collapsible Top Menu Transition */
+        #topMenuContainer {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+        #topMenuContainer.collapsed {
+            transform: translateY(-120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen font-sans selection:bg-rust selection:text-white pb-24">
+
+    <!-- Audio Tag -->
+    <audio id="bgMusic" src="nottomorrow.mp3" loop preload="auto"></audio>
+
+    <!-- Enter Overlay -->
+    <div id="gunsEnterOverlay" onclick="unlockAudio()" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black text-stone-200 cursor-pointer transition-all duration-700 select-none">
+        <div class="text-center group px-4">
+            <h2 class="font-grunge text-xl md:text-3xl text-stone-300 tracking-widest animate-pulse group-hover:text-stone-100 transition duration-500">
+                [ click to enter... ]
+            </h2>
+            <div class="font-mono text-xs text-stone-600 text-center mt-4 tracking-widest group-hover:text-stone-400 transition">
+                // silent hill - not tomorrow
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Canvas for Procedural Rain -->
+    <canvas id="rainCanvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Visual Overlays -->
+    <div class="fixed inset-0 z-0 animated-fog w-[150%] h-[150%] -top-[25%] -left-[25%]"></div>
+    <div class="fixed inset-0 z-10 vignette"></div>
+    <div id="lightningOverlay" class="fixed inset-0 pointer-events-none transition-all duration-75" style="z-index: 15;"></div>
+    <div id="crtOverlay" class="fixed inset-0 z-20 crt-overlay transition-opacity duration-300 opacity-100"></div>
+
+    <!-- Toggle Menu Trigger Button (Hidden on entry gate, fades in after unlock) -->
+    <button id="btnToggleMenuTrigger" title="Menüyü Aç / Kapat" class="fixed top-3 right-4 z-[70] px-3 py-1.5 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-stone-300 hover:text-white transition text-xs cursor-pointer flex items-center gap-2 opacity-0 pointer-events-none duration-500">
+        <i class="fa-solid fa-sliders"></i>
+        <span class="font-mono">Menü</span>
+    </button>
+
+    <!-- Collapsible Header Bar -->
+    <header id="topMenuContainer" class="collapsed fixed top-0 left-0 w-full z-[60] bg-black/60 backdrop-blur-md border-b border-white/10 px-4 py-2.5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <button id="btnPlayPause" class="w-9 h-9 flex items-center justify-center rounded-full bg-black/40 border border-white/10 text-stone-300 hover:bg-black/60 hover:text-white transition cursor-pointer">
+                <i id="playIcon" class="fa-solid fa-play text-xs"></i>
+            </button>
+            <div>
+                <div class="text-xs font-cinzel text-stone-300 font-bold tracking-wide flex items-center gap-2">
+                    <span id="trackTitleDisplay">Silent Hill - Not Tomorrow</span>
+                    <span id="musicStatus" class="inline-block w-2 h-2 rounded-full bg-stone-600"></span>
+                </div>
+                <div class="flex items-center gap-2 text-[10px] text-stone-500 font-mono">
+                    <span id="audioSourceType" class="text-stone-400">[nottomorrow.mp3]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div class="hidden sm:flex items-center gap-2 bg-black/40 px-3 py-1 rounded-full border border-white/10 text-xs text-stone-400">
+                <i class="fa-solid fa-cloud-rain text-stone-500" title="Yağmur Sesi"></i>
+                <input id="rainVolumeSlider" type="range" min="0" max="1" step="0.01" value="0.4" class="w-16 accent-stone-400 cursor-pointer" title="Yağmur Sesi">
+                <i class="fa-solid fa-music text-stone-500 ml-2" title="Müzik Sesi"></i>
+                <input id="musicVolumeSlider" type="range" min="0" max="1" step="0.01" value="0.6" class="w-16 accent-stone-400 cursor-pointer" title="Müzik Sesi">
+            </div>
+
+            <button id="btnToggleLightning" title="Şimşek Efektini Aç / Kapat" class="p-2 rounded-lg bg-black/40 border border-white/10 text-amber-400 hover:border-amber-500/40 transition text-xs cursor-pointer">
+                <i id="lightningIcon" class="fa-solid fa-bolt transition-colors duration-300"></i>
+            </button>
+        </div>
+    </header>
+
+    <main id="mainContent" class="relative z-30 max-w-3xl mx-auto px-4 pt-20 opacity-0">
+
+        <!-- Profile Section -->
+        <section class="mb-10 text-center">
+            <div class="relative inline-block mb-4">
+                <img id="avatarImg" src="" alt="Profile Avatar" class="w-28 h-28 md:w-32 md:h-32 rounded-full object-cover border-2 border-white/10 avatar-pulse mx-auto grayscale hover:grayscale-0 transition duration-500">
+                <div class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-black/60 backdrop-blur border border-white/10 flex items-center justify-center text-[9px] text-stone-300" title="Sisli Sinyal">
+                    <i class="fa-solid fa-radio animate-pulse"></i>
+                </div>
+            </div>
+
+            <h1 id="displayName" class="font-cinzel text-2xl md:text-3xl font-bold tracking-wider text-stone-200 mb-1"></h1>
+            <p id="displayTitle" class="font-mono text-xs md:text-sm text-stone-400 tracking-widest uppercase mb-3"></p>
+            <p id="displayBio" class="text-stone-300 text-sm md:text-base max-w-lg mx-auto leading-relaxed font-light"></p>
+        </section>
+
+        <!-- Social Media Links Section (Header removed) -->
+        <section class="mb-10">
+            <div id="socialsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        </section>
+
+        <!-- System Specs Section (Below Socials) -->
+        <section class="mb-12">
+            <div class="sh-card rounded-xl overflow-hidden border border-white/10">
+                <div class="p-4 flex items-center justify-between text-left group">
+                    <button id="btnToggleSpecs" class="flex items-center gap-3 flex-1 cursor-pointer text-left">
+                        <div class="w-10 h-10 rounded-lg bg-black/20 border border-white/10 flex items-center justify-center text-stone-300 group-hover:border-white/20 transition-colors shrink-0">
+                            <i class="fa-solid fa-microchip text-base"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-cinzel font-bold text-stone-200 tracking-wide uppercase flex items-center gap-2">
+                                Sistem & Donanım Özellikleri
+                            </div>
+                            <div class="text-xs font-mono text-stone-400 mt-0.5">İşlemci, Ekran Kartı, Ekipmanlar ve Sistem</div>
+                        </div>
+                    </button>
+                    
+                    <div class="flex items-center gap-3">
+                        <button id="btnToggleAllSubcats" type="button" title="Tüm Donanım Kategorilerini Aç / Kapat" class="text-xs font-mono px-3 py-1.5 rounded-lg bg-black/20 hover:bg-black/40 border border-white/10 text-stone-300 hover:text-stone-100 transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-layer-group text-xs text-stone-400"></i>
+                            <span id="btnToggleAllText">Tümünü Aç</span>
+                        </button>
+                        <button id="btnSpecsChevronToggle" type="button" title="Sistem Menüsünü Aç / Kapat" class="p-1.5 rounded-lg hover:bg-black/20 text-stone-400 hover:text-stone-200 transition cursor-pointer">
+                            <i id="specsChevron" class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="specsAccordion" class="specs-accordion px-4 pb-3">
+                    <div class="specs-accordion-inner">
+                        <div id="specsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 items-start"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-6 border-t border-white/10 text-xs text-stone-500 font-mono">
+            <p>bu site, helnyria tarafından vibekodlandı — dileyen herkes kodları özgürce kullanabilir.</p>
+        </footer>
+    </main>
+
+    <!-- Notification Toast Box -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-black/80 backdrop-blur-md border border-white/10 text-stone-200 px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3 text-xs pointer-events-none">
+        <i class="fa-solid fa-circle-check text-stone-300 text-sm"></i>
+        <span id="toastMsg">İşlem tamamlandı.</span>
+    </div>
+
+    <script>
+        let appData = null;
+        let selectedObjectUrl = null;
+        let isPlayingMusic = false;
+        let lightningEnabled = true;
+        let allSubcatsOpen = false;
+        let audioCtx = null;
+        let rainGainNode = null;
+        let rainSourceNode = null;
+        let lightningTimer = null;
+        let isUnlocked = false;
+
+        async function loadData() {
+            try {
+                const response = await fetch('data.json');
+                appData = await response.json();
+            } catch (e) {
+                console.error("data.json yüklenemedi, varsayılan veriler kullanılıyor:", e);
+            }
+            renderUI();
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            if (!toast || !toastMsg) return;
+            toastMsg.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function unlockAudio() {
+            if (isUnlocked) return;
+            isUnlocked = true;
+
+            const overlay = document.getElementById('gunsEnterOverlay');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+                setTimeout(() => { overlay.style.display = 'none'; }, 1000);
+            }
+
+            const menuTrigger = document.getElementById('btnToggleMenuTrigger');
+            if (menuTrigger) {
+                menuTrigger.classList.remove('opacity-0', 'pointer-events-none');
+                menuTrigger.classList.add('opacity-100');
+            }
+
+            const mainContent = document.getElementById('mainContent');
+            if (mainContent) {
+                mainContent.classList.remove('opacity-0');
+                mainContent.style.opacity = '1';
+                mainContent.classList.add('melancholic-appear');
+            }
+
+            try {
+                if (!audioCtx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContextClass) audioCtx = new AudioContextClass();
+                }
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            } catch(e) {}
+
+            try { startProceduralRainAudio(); } catch(e) {}
+            try { playMusic(); } catch(e) {}
+            try { scheduleNextLightning(); } catch(e) {}
+        }
+
+        function playMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            if (!bgMusic || !appData) return;
+
+            if (selectedObjectUrl) {
+                bgMusic.src = selectedObjectUrl;
+            } else if (appData.profile.audioPath) {
+                bgMusic.src = appData.profile.audioPath;
+            }
+
+            const musicVol = parseFloat(document.getElementById('musicVolumeSlider')?.value || 0.6);
+            bgMusic.volume = musicVol;
+
+            bgMusic.play().then(() => {
+                isPlayingMusic = true;
+                updatePlayButtonUI();
+            }).catch(err => {
+                isPlayingMusic = false;
+                updatePlayButtonUI();
+            });
+        }
+
+        function toggleMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            if (!bgMusic || !appData) return;
+
+            if (isPlayingMusic) {
+                bgMusic.pause();
+                isPlayingMusic = false;
+            } else {
+                if (!bgMusic.src || bgMusic.src === '' || bgMusic.src.endsWith('#')) {
+                    if (selectedObjectUrl) bgMusic.src = selectedObjectUrl;
+                    else if (appData.profile.audioPath) bgMusic.src = appData.profile.audioPath;
+                }
+                bgMusic.play().then(() => {
+                    isPlayingMusic = true;
+                    updatePlayButtonUI();
+                }).catch(e => {});
+            }
+            updatePlayButtonUI();
+        }
+
+        function updatePlayButtonUI() {
+            const icon = document.getElementById('playIcon');
+            const status = document.getElementById('musicStatus');
+            if (icon) icon.className = isPlayingMusic ? "fa-solid fa-pause text-xs" : "fa-solid fa-play text-xs";
+            if (status) status.className = isPlayingMusic ? "inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" : "inline-block w-2 h-2 rounded-full bg-stone-600";
+        }
+
+        function startProceduralRainAudio() {
+            if (!audioCtx) return;
+            try {
+                const bufferSize = audioCtx.sampleRate * 2;
+                const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    output[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = output[i];
+                    output[i] *= 3.5;
+                }
+
+                rainSourceNode = audioCtx.createBufferSource();
+                rainSourceNode.buffer = noiseBuffer;
+                rainSourceNode.loop = true;
+
+                const rainFilter = audioCtx.createBiquadFilter();
+                rainFilter.type = 'lowpass';
+                rainFilter.frequency.value = 1000;
+
+                rainGainNode = audioCtx.createGain();
+                const initialVol = parseFloat(document.getElementById('rainVolumeSlider')?.value || 0.4);
+                rainGainNode.gain.setValueAtTime(initialVol, audioCtx.currentTime);
+
+                rainSourceNode.connect(rainFilter);
+                rainFilter.connect(rainGainNode);
+                rainGainNode.connect(audioCtx.destination);
+
+                rainSourceNode.start();
+            } catch(e) {}
+        }
+
+        function playRealisticThunder() {
+            if (!lightningEnabled || !audioCtx || audioCtx.state !== 'running') return;
+            try {
+                const now = audioCtx.currentTime;
+                const rainVol = parseFloat(document.getElementById('rainVolumeSlider')?.value || 0.4);
+                const musicVol = parseFloat(document.getElementById('musicVolumeSlider')?.value || 0.6);
+                const baseMasterVol = Math.min(1.0, Math.max(0.5, (rainVol + musicVol) * 0.85));
+
+                const rumbleDuration = 5.5;
+                const rumbleBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * rumbleDuration, audioCtx.sampleRate);
+                const rumbleData = rumbleBuffer.getChannelData(0);
+                let lastOut = 0.0;
+                for (let i = 0; i < rumbleBuffer.length; i++) {
+                    const white = Math.random() * 2 - 1;
+                    rumbleData[i] = (lastOut + (0.025 * white)) / 1.025;
+                    lastOut = rumbleData[i];
+                    rumbleData[i] *= 4.5;
+                }
+                const rumbleSource = audioCtx.createBufferSource();
+                rumbleSource.buffer = rumbleBuffer;
+
+                const rumbleFilter = audioCtx.createBiquadFilter();
+                rumbleFilter.type = 'lowpass';
+                rumbleFilter.frequency.setValueAtTime(400, now);
+                rumbleFilter.frequency.exponentialRampToValueAtTime(30, now + rumbleDuration);
+
+                const rumbleGain = audioCtx.createGain();
+                rumbleGain.gain.setValueAtTime(0, now);
+                rumbleGain.gain.linearRampToValueAtTime(baseMasterVol * 1.1, now + 0.1);
+                rumbleGain.gain.exponentialRampToValueAtTime(baseMasterVol * 0.4, now + 1.2);
+                rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + rumbleDuration);
+
+                rumbleSource.connect(rumbleFilter);
+                rumbleFilter.connect(rumbleGain);
+                rumbleGain.connect(audioCtx.destination);
+                rumbleSource.start(now);
+            } catch(e) {}
+        }
+
+        function triggerLightning() {
+            if (!lightningEnabled) return;
+            const overlay = document.getElementById('lightningOverlay');
+            if (!overlay) return;
+
+            const intenseOpacity = Math.random() * 0.25 + 0.75;
+            overlay.style.backgroundColor = `rgba(240, 246, 255, ${intenseOpacity})`;
+            
+            setTimeout(() => {
+                overlay.style.backgroundColor = 'rgba(240, 246, 255, 0.08)';
+                setTimeout(() => {
+                    overlay.style.backgroundColor = `rgba(240, 246, 255, ${intenseOpacity * 0.85})`;
+                    setTimeout(() => {
+                        overlay.style.backgroundColor = 'rgba(240, 246, 255, 0.03)';
+                        setTimeout(() => { overlay.style.backgroundColor = 'transparent'; }, 100);
+                    }, 35);
+                }, 25);
+            }, 50);
+
+            setTimeout(playRealisticThunder, Math.random() * 250 + 100);
+            scheduleNextLightning();
+        }
+
+        function scheduleNextLightning() {
+            clearTimeout(lightningTimer);
+            if (!lightningEnabled) return;
+            lightningTimer = setTimeout(triggerLightning, Math.random() * 12000 + 6000);
+        }
+
+        function initRainCanvas() {
+            const canvas = document.getElementById('rainCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const drops = [];
+            for (let i = 0; i < 110; i++) {
+                drops.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    length: Math.random() * 20 + 10,
+                    speed: Math.random() * 12 + 8,
+                    opacity: Math.random() * 0.4 + 0.1
+                });
+            }
+
+            const ripples = [];
+
+            function animateRain() {
+                ctx.clearRect(0, 0, width, height);
+                ctx.strokeStyle = 'rgba(180, 200, 220, 0.35)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                for (let i = 0; i < drops.length; i++) {
+                    const d = drops[i];
+                    ctx.moveTo(d.x, d.y);
+                    ctx.lineTo(d.x - d.length * 0.15, d.y + d.length);
+                    d.y += d.speed;
+                    d.x -= d.speed * 0.15;
+
+                    if (d.y > height) {
+                        if (Math.random() > 0.6) {
+                            ripples.push({
+                                x: d.x,
+                                y: height - Math.random() * 20,
+                                radius: 1,
+                                maxRadius: Math.random() * 12 + 6,
+                                opacity: 0.5
+                            });
+                        }
+                        d.y = -20;
+                        d.x = Math.random() * width;
+                    }
+                }
+                ctx.stroke();
+
+                for (let i = ripples.length - 1; i >= 0; i--) {
+                    const r = ripples[i];
+                    ctx.beginPath();
+                    ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(160, 180, 200, ${r.opacity})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+
+                    r.radius += 0.5;
+                    r.opacity -= 0.02;
+
+                    if (r.opacity <= 0 || r.radius >= r.maxRadius) ripples.splice(i, 1);
+                }
+                requestAnimationFrame(animateRain);
+            }
+            animateRain();
+        }
+
+        function renderUI() {
+            if (!appData) return;
+            document.getElementById('displayName').innerText = appData.profile.name || "";
+            document.getElementById('displayTitle').innerText = appData.profile.title || "";
+            document.getElementById('displayBio').innerText = appData.profile.bio || "";
+            if (appData.profile.avatar) document.getElementById('avatarImg').src = appData.profile.avatar;
+            
+            const trackDisplay = document.getElementById('trackTitleDisplay');
+            if (trackDisplay) trackDisplay.innerText = "Silent Hill - Not Tomorrow";
+            
+            const audioBadge = document.getElementById('audioSourceType');
+            if (audioBadge) audioBadge.innerText = `[${appData.profile.audioPath || 'nottomorrow.mp3'}]`;
+
+            renderSpecs();
+            renderSocials();
+        }
+
+        function renderSpecs() {
+            const container = document.getElementById('specsContainer');
+            if (!container || !appData) return;
+            container.innerHTML = '';
+
+            appData.specsCategories.forEach((cat, catIdx) => {
+                const categoryWrapper = document.createElement('div');
+                categoryWrapper.className = "specs-cat-card p-3.5 rounded-xl bg-black/10 backdrop-blur-[2px] border border-white/5 shadow-md";
+
+                categoryWrapper.innerHTML = `
+                    <button type="button" class="btn-toggle-subcat w-full flex items-center justify-between text-left group cursor-pointer" data-cat="${catIdx}">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-md bg-black/20 border border-white/10 flex items-center justify-center text-stone-300 text-sm shrink-0 transition">
+                                <i class="fa-solid ${cat.icon || 'fa-folder'}"></i>
+                            </div>
+                            <div>
+                                <span class="text-sm font-cinzel font-bold text-stone-300 transition">${cat.title}</span>
+                            </div>
+                        </div>
+                        <i class="subcat-chevron fa-solid fa-chevron-down text-xs text-stone-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="subcat-content specs-accordion mt-2.5">
+                        <div class="specs-accordion-inner flex flex-col gap-2 pt-2.5 border-t border-white/5">
+                            ${cat.items.map(item => `
+                                <div class="spec-item-card p-2.5 rounded-lg bg-black/10 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 transition-all cursor-pointer group/item" 
+                                     data-copy-val="${item.val}" 
+                                     title="Panoya kopyalamak için tıklayın">
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-stone-600"></span>
+                                        <span class="text-xs font-mono text-stone-400 font-medium">${item.label}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 min-w-0 justify-between sm:justify-end">
+                                        <span class="text-xs font-mono text-stone-200 font-medium text-left sm:text-right break-words select-all">${item.val}</span>
+                                        <i class="fa-regular fa-copy text-[10px] text-stone-500 shrink-0 ml-1" title="Kopyala"></i>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(categoryWrapper);
+            });
+
+            container.querySelectorAll('.btn-toggle-subcat').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const wrapper = btn.closest('.specs-cat-card');
+                    if (!wrapper) return;
+                    wrapper.querySelector('.subcat-content')?.classList.toggle('open');
+                    wrapper.querySelector('.subcat-chevron')?.classList.toggle('rotate-180');
+                });
+            });
+
+            container.querySelectorAll('.spec-item-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const copyText = card.dataset.copyVal;
+                    if (!copyText) return;
+
+                    const dummy = document.createElement('textarea');
+                    dummy.value = copyText;
+                    document.body.appendChild(dummy);
+                    dummy.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(dummy);
+
+                    showToast(`Panoya kopyalandı: ${copyText}`);
+                });
+            });
+        }
+
+        function renderSocials() {
+            const container = document.getElementById('socialsContainer');
+            if (!container || !appData) return;
+            container.innerHTML = '';
+
+            appData.socials.forEach(s => {
+                const btn = document.createElement('div');
+                btn.className = "sh-card p-4 rounded-xl flex items-center justify-between group cursor-pointer transition-all duration-300";
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-10 h-10 rounded-lg bg-black/20 border border-white/10 flex items-center justify-center text-stone-300 transition-all">
+                            <i class="${s.icon} text-lg"></i>
+                        </div>
+                        <div>
+                            <div class="text-sm font-cinzel font-bold text-stone-200 transition">${s.platform}</div>
+                            <div class="text-xs font-mono text-stone-400 mt-0.5">${s.label}</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs text-stone-500 transition-colors"></i>
+                `;
+
+                btn.addEventListener('click', () => {
+                    if (s.url && s.url.startsWith('copy:')) {
+                        const copyVal = s.url.replace('copy:', '');
+                        const dummy = document.createElement('textarea');
+                        dummy.value = copyVal;
+                        document.body.appendChild(dummy);
+                        dummy.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(dummy);
+                        showToast(`${s.platform} adresi kopyalandı! (${copyVal})`);
+                    } else if (s.url) {
+                        window.open(s.url, '_blank');
+                    }
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initRainCanvas();
+            loadData();
+
+            const enterOverlay = document.getElementById('gunsEnterOverlay');
+            if (enterOverlay) enterOverlay.addEventListener('click', unlockAudio);
+
+            const topMenu = document.getElementById('topMenuContainer');
+            const menuTrigger = document.getElementById('btnToggleMenuTrigger');
+
+            menuTrigger?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                topMenu?.classList.toggle('collapsed');
+            });
+
+            document.getElementById('btnPlayPause')?.addEventListener('click', toggleMusic);
+            
+            document.getElementById('rainVolumeSlider')?.addEventListener('input', (e) => {
+                if (rainGainNode && audioCtx) rainGainNode.gain.setValueAtTime(parseFloat(e.target.value), audioCtx.currentTime);
+            });
+
+            document.getElementById('musicVolumeSlider')?.addEventListener('input', (e) => {
+                const bgMusic = document.getElementById('bgMusic');
+                if (bgMusic) bgMusic.volume = parseFloat(e.target.value);
+            });
+
+            document.getElementById('btnToggleLightning')?.addEventListener('click', () => {
+                lightningEnabled = !lightningEnabled;
+                const icon = document.getElementById('lightningIcon');
+                if (icon) {
+                    icon.className = lightningEnabled ? "fa-solid fa-bolt text-amber-400 transition-colors duration-300" : "fa-solid fa-bolt text-stone-600 opacity-50 transition-colors duration-300";
+                }
+                showToast(lightningEnabled ? "Şimşek efekti açıldı." : "Şimşek efekti kapatıldı.");
+            });
+
+            const toggleMainSpecsAccordion = () => {
+                const accordion = document.getElementById('specsAccordion');
+                const chevron = document.getElementById('specsChevron');
+                if (accordion) accordion.classList.toggle('open');
+                if (chevron) chevron.classList.toggle('rotate-180');
+            };
+
+            document.getElementById('btnToggleSpecs')?.addEventListener('click', toggleMainSpecsAccordion);
+            document.getElementById('btnSpecsChevronToggle')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMainSpecsAccordion();
+            });
+
+            document.getElementById('btnToggleAllSubcats')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const accordion = document.getElementById('specsAccordion');
+                const mainChevron = document.getElementById('specsChevron');
+                
+                if (accordion && !accordion.classList.contains('open')) {
+                    accordion.classList.add('open');
+                    if (mainChevron) mainChevron.classList.add('rotate-180');
+                }
+
+                const container = document.getElementById('specsContainer');
+                if (!container) return;
+
+                const contents = container.querySelectorAll('.subcat-content');
+                const chevrons = container.querySelectorAll('.subcat-chevron');
+                const btnText = document.getElementById('btnToggleAllText');
+
+                allSubcatsOpen = !allSubcatsOpen;
+
+                contents.forEach(c => {
+                    if (allSubcatsOpen) c.classList.add('open');
+                    else c.classList.remove('open');
+                });
+
+                chevrons.forEach(ch => {
+                    if (allSubcatsOpen) ch.classList.add('rotate-180');
+                    else ch.classList.remove('rotate-180');
+                });
+
+                if (btnText) btnText.innerText = allSubcatsOpen ? "Tümünü Kapat" : "Tümünü Aç";
+            });
+        });
+    </script>
+</body>
+</html>
