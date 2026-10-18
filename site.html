@@ -70,7 +70,6 @@
             will-change: transform;
         }
 
-        /* Ultra Transparent Glassmorphism Cards */
         .sh-card {
             background: rgba(0, 0, 0, 0.04);
             backdrop-filter: blur(2px);
@@ -131,17 +130,16 @@
             animation: melancholicAppear 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Scary & Intense Portal Eye Sigil Animation */
+        /* Scary Eye Portal Animation */
         @keyframes scaryEyePulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(184, 74, 57, 0.3)); opacity: 0.85; }
-            50% { transform: scale(1.12); filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.9)); opacity: 1; }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(184, 74, 57, 0.5)); opacity: 0.85; }
+            50% { transform: scale(1.12); filter: drop-shadow(0 0 22px rgba(255, 50, 50, 0.9)); opacity: 1; }
         }
-        .portal-sigil {
+        .scary-eye-portal {
             animation: scaryEyePulse 2.8s infinite ease-in-out;
             cursor: pointer;
         }
 
-        /* Minimal Settings Dropdown Panel */
         #settingsDropdown {
             transform-origin: top right;
             transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
@@ -152,7 +150,6 @@
             pointer-events: none;
         }
 
-        /* Screen Chaos Glow Border without layout stretching */
         @keyframes stormPanicBorder {
             0%, 100% { box-shadow: inset 0 0 25px rgba(234, 179, 8, 0.4); }
             50% { box-shadow: inset 0 0 65px rgba(234, 179, 8, 0.9); }
@@ -164,12 +161,12 @@
 </head>
 <body class="relative min-h-screen font-sans selection:bg-rust selection:text-white pb-24 overflow-x-hidden">
 
-    <audio id="bgMusic" src="nottomorrow.mp3" loop preload="auto"></audio>
+    <audio id="bgMusic" loop preload="auto"></audio>
 
-    <!-- Scary Standalone Eye Entry Portal Gate Overlay (No Text, No Borders) -->
-    <div id="gunsEnterOverlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black transition-all duration-700 select-none">
-        <div onclick="unlockAudio()" class="portal-sigil flex items-center justify-center p-6 cursor-pointer group">
-            <i class="fa-solid fa-eye text-5xl sm:text-6xl text-stone-400 group-hover:text-red-600 transition duration-500 cursor-pointer"></i>
+    <!-- Interactive Portal Gate Overlay (Scary Eye Only) -->
+    <div id="gunsEnterOverlay" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black text-stone-200 transition-all duration-700 select-none">
+        <div onclick="unlockAudio()" class="scary-eye-portal flex items-center justify-center p-4 cursor-pointer">
+            <i class="fa-solid fa-eye text-6xl sm:text-7xl text-red-700 hover:text-red-500 transition duration-300"></i>
         </div>
     </div>
 
@@ -201,28 +198,22 @@
                 </button>
             </div>
 
-            <!-- Rain Volume Slider -->
+            <!-- Rain Volume Slider with Percentage -->
             <div class="flex flex-col gap-1">
                 <div class="flex items-center justify-between text-[11px] text-stone-400 font-mono">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-cloud-rain w-4 text-center"></i>
-                        <span>Yağmur Sesi</span>
-                    </div>
-                    <span id="rainVolText">40%</span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud-rain text-xs"></i> Yağmur Sesi</span>
+                    <span id="rainValText">40%</span>
                 </div>
-                <input id="rainVolumeSlider" type="range" min="0" max="1" step="0.01" value="0.4" class="w-full accent-stone-400 cursor-pointer h-1.5 bg-stone-800 rounded-lg" title="Yağmur Sesi Seviyesi">
+                <input id="rainVolumeSlider" type="range" min="0" max="1" step="0.01" value="0.4" class="w-full accent-stone-400 cursor-pointer h-1.5 bg-stone-800 rounded-lg">
             </div>
 
-            <!-- Music Volume Slider -->
+            <!-- Music Volume Slider with Percentage -->
             <div class="flex flex-col gap-1">
                 <div class="flex items-center justify-between text-[11px] text-stone-400 font-mono">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-music w-4 text-center"></i>
-                        <span>Müzik Sesi</span>
-                    </div>
-                    <span id="musicVolText">60%</span>
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-music text-xs"></i> Müzik Sesi</span>
+                    <span id="musicValText">60%</span>
                 </div>
-                <input id="musicVolumeSlider" type="range" min="0" max="1" step="0.01" value="0.6" class="w-full accent-stone-400 cursor-pointer h-1.5 bg-stone-800 rounded-lg" title="Müzik Sesi Seviyesi">
+                <input id="musicVolumeSlider" type="range" min="0" max="1" step="0.01" value="0.6" class="w-full accent-stone-400 cursor-pointer h-1.5 bg-stone-800 rounded-lg">
             </div>
 
             <!-- Lightning Toggle Switch -->
@@ -236,7 +227,7 @@
                 </button>
             </div>
 
-            <!-- Secret Storm Destruction Button ("Sakın Basmayın") -->
+            <!-- Secret Storm Destruction Button -->
             <div class="pt-2 border-t border-white/10">
                 <button id="btnSecretChaos" class="w-full py-1.5 px-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[11px] font-mono transition flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
@@ -312,8 +303,104 @@
     </div>
 
     <script>
+        const FALLBACK_DATA = {
+            profile: {
+                name: "Helnyria",
+                title: "// GÖZÜPEK YAZILIMCI & OYUN GELİŞTİRİCİ",
+                bio: "Sessizliğin ve bitmeyen yağmurun arasında kaybolmuş bir ruh... Sisli sokaklarda kodlama, karanlık atmosferik oyun tasarımı ve retro dijital sanat üretiyorum.",
+                avatar: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400&auto=format&fit=crop",
+                audioPath: "nottomorrow.mp3"
+            },
+            specsCategories: [
+                {
+                    id: "cat_monitors",
+                    title: "Monitörler & Ekran Kurulumu",
+                    icon: "fa-desktop",
+                    items: [
+                        { label: "Ana Monitör", val: "MSI MPG 271QRX 27\" 2K QD-OLED 360Hz" },
+                        { label: "2. Monitör", val: "MSI G274QPF E2 27\" 2K IPS 180Hz" },
+                        { label: "3. Monitör", val: "Acer EG241Y P 24\" FHD IPS 144Hz" },
+                        { label: "1. Monitör Kolu", val: "North Bayou H100" },
+                        { label: "2. Monitör Kolu", val: "2x North Bayou F80" }
+                    ]
+                },
+                {
+                    id: "cat_hardware",
+                    title: "Kasa & Ana Donanım",
+                    icon: "fa-microchip",
+                    items: [
+                        { label: "Anakart", val: "ASUS Prime B650-Plus" },
+                        { label: "Bellek (RAM)", val: "2x16GB Corsair Vengeance 6000MHz CL36 DDR5" },
+                        { label: "Ekran Kartı (GPU)", val: "Sapphire Nitro+ RX 7800 XT" },
+                        { label: "Güç Kaynağı (PSU)", val: "FSP VITA GM1000W 1000W 80+ Gold" },
+                        { label: "İşlemci (CPU)", val: "AMD Ryzen 5 7500F" },
+                        { label: "Kasa", val: "Gamepower Warcry" },
+                        { label: "Kasa Fanları", val: "6x Thermalright TL-C12C-S ARGB Black" },
+                        { label: "Sıvı Soğutma", val: "Bitfenix Cube 360" }
+                    ]
+                },
+                {
+                    id: "cat_storage",
+                    title: "Depolama Sürücüleri",
+                    icon: "fa-hard-drive",
+                    items: [
+                        { label: "Ana SSD (NVMe)", val: "Kingston Renegade 1TB (7300/6000 MB/s)" },
+                        { label: "2. SSD (NVMe)", val: "INTENSO 500GB NVMe" },
+                        { label: "Depolama HDD", val: "Seagate BarraCuda 2TB (ST2000DM008)" }
+                    ]
+                },
+                {
+                    id: "cat_peripherals",
+                    title: "Klavye & Çevre Birimleri",
+                    icon: "fa-keyboard",
+                    items: [
+                        { label: "Çalışma Masası", val: "Karr Office O-Flex Duo" },
+                        { label: "Fare (Mouse)", val: "ATK Blazing Sky X1 Ultra White" },
+                        { label: "Klavye", val: "Darmoshark TOP75" },
+                        { label: "Mikrofon", val: "Lastvoice BM800BT" },
+                        { label: "Oyuncu Koltuğu", val: "Hawk Fab v6 Stone" }
+                    ]
+                },
+                {
+                    id: "cat_controllers",
+                    title: "Gamepad & Kontrolcüler",
+                    icon: "fa-gamepad",
+                    items: [
+                        { label: "Ana Gamepad", val: "Flydigi Apex 4 Elite" },
+                        { label: "İkincil Gamepad", val: "8BitDo Ultimate C" }
+                    ]
+                },
+                {
+                    id: "cat_audio",
+                    title: "Ses & Kulaklıklar",
+                    icon: "fa-headphones",
+                    items: [
+                        { label: "Ana Kulaklık", val: "Skullcandy Crusher Evo Black" },
+                        { label: "Kablosuz Kulaklık", val: "Anker Soundcore Liberty 4 NC" }
+                    ]
+                },
+                {
+                    id: "cat_infrastructure",
+                    title: "Güç & Ağ Altyapısı",
+                    icon: "fa-plug",
+                    items: [
+                        { label: "Bluetooth Adaptör", val: "TP-Link UB500" },
+                        { label: "Güç Kaynağı (UPS)", val: "Powerful SLE-1500 1500VA Line Interactive" },
+                        { label: "Modem / Router", val: "Keenetic Hopper DSL (KN-3610)" }
+                    ]
+                }
+            ],
+            socials: [
+                { id: "s1", platform: "Instagram", label: "@silent.rest", url: "https://instagram.com", icon: "fa-brands fa-instagram" },
+                { id: "s2", platform: "Discord", label: "Helnyria", url: "copy:Helnyria", icon: "fa-brands fa-discord" },
+                { id: "s3", platform: "Steam", label: "SilentRest", url: "https://store.steampowered.com", icon: "fa-brands fa-steam" },
+                { id: "s4", platform: "RetroAchievements", label: "SilentGamer", url: "https://retroachievements.org", icon: "fa-solid fa-trophy" },
+                { id: "s5", platform: "MyAnimeList", label: "MelancholicP", url: "https://myanimelist.net", icon: "fa-solid fa-list-check" },
+                { id: "s6", platform: "Backloggd", label: "FoggyGames", url: "https://backloggd.com", icon: "fa-solid fa-gamepad" }
+            ]
+        };
+
         let appData = null;
-        let selectedObjectUrl = null;
         let isPlayingMusic = false;
         let lightningEnabled = true;
         let stormChaosActive = false;
@@ -331,18 +418,20 @@
                 if (!response.ok) throw new Error("Fetch failed");
                 appData = await response.json();
             } catch (e) {
-                appData = {
-                    profile: {
-                        name: "Helnyria",
-                        title: "// GÖZÜPEK YAZILIMCI & OYUN GELİŞTİRİCİ",
-                        bio: "Sessizliğin ve bitmeyen yağmurun arasında kaybolmuş bir ruh... Sisli sokaklarda kodlama, karanlık atmosferik oyun tasarımı ve retro dijital sanat üretiyorum.",
-                        avatar: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400&auto=format&fit=crop",
-                        audioPath: "nottomorrow.mp3"
-                    },
-                    specsCategories: [],
-                    socials: []
-                };
+                appData = FALLBACK_DATA;
             }
+
+            // Dinamik Discord Avatarı Entegrasyonu (shukapi.vercel.app/api/stats)
+            try {
+                const statsRes = await fetch('https://shukapi.vercel.app/api/stats');
+                if (statsRes.ok) {
+                    const statsData = await statsRes.json();
+                    if (statsData && statsData.ownerAvatarURL) {
+                        appData.profile.avatar = statsData.ownerAvatarURL;
+                    }
+                }
+            } catch (err) {}
+
             renderUI();
         }
 
@@ -357,42 +446,6 @@
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
-        }
-
-        function copyToClipboard(text, successMessage) {
-            const finalMsg = successMessage || `Panoya kopyalandı: ${text}`;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast(finalMsg);
-                }).catch(() => {
-                    fallbackCopy(text, finalMsg);
-                });
-            } else {
-                fallbackCopy(text, finalMsg);
-            }
-        }
-
-        function fallbackCopy(text, successMessage) {
-            try {
-                const dummy = document.createElement('textarea');
-                dummy.value = text;
-                dummy.style.position = 'fixed';
-                dummy.style.top = '0';
-                dummy.style.left = '0';
-                dummy.style.opacity = '0';
-                document.body.appendChild(dummy);
-                dummy.focus();
-                dummy.select();
-                const successful = document.execCommand('copy');
-                document.body.removeChild(dummy);
-                if (successful) {
-                    showToast(successMessage);
-                } else {
-                    showToast("Kopyalama başarısız oldu.");
-                }
-            } catch (err) {
-                showToast("Kopyalama desteklenmiyor.");
-            }
         }
 
         function unlockAudio() {
@@ -436,9 +489,7 @@
             const bgMusic = document.getElementById('bgMusic');
             if (!bgMusic || !appData) return;
 
-            if (selectedObjectUrl) {
-                bgMusic.src = selectedObjectUrl;
-            } else if (appData.profile.audioPath) {
+            if (appData.profile.audioPath) {
                 bgMusic.src = appData.profile.audioPath;
             }
 
@@ -463,8 +514,7 @@
                 isPlayingMusic = false;
             } else {
                 if (!bgMusic.src || bgMusic.src === '' || bgMusic.src.endsWith('#')) {
-                    if (selectedObjectUrl) bgMusic.src = selectedObjectUrl;
-                    else if (appData.profile.audioPath) bgMusic.src = appData.profile.audioPath;
+                    if (appData.profile.audioPath) bgMusic.src = appData.profile.audioPath;
                 }
                 bgMusic.play().then(() => {
                     isPlayingMusic = true;
@@ -682,10 +732,10 @@
 
         function renderUI() {
             if (!appData) return;
-            document.getElementById('displayName').innerText = appData.profile?.name || "";
-            document.getElementById('displayTitle').innerText = appData.profile?.title || "";
-            document.getElementById('displayBio').innerText = appData.profile?.bio || "";
-            if (appData.profile?.avatar) document.getElementById('avatarImg').src = appData.profile.avatar;
+            document.getElementById('displayName').innerText = appData.profile.name || "";
+            document.getElementById('displayTitle').innerText = appData.profile.title || "";
+            document.getElementById('displayBio').innerText = appData.profile.bio || "";
+            if (appData.profile.avatar) document.getElementById('avatarImg').src = appData.profile.avatar;
 
             renderSpecs();
             renderSocials();
@@ -693,7 +743,7 @@
 
         function renderSpecs() {
             const container = document.getElementById('specsContainer');
-            if (!container || !appData || !appData.specsCategories) return;
+            if (!container || !appData) return;
             container.innerHTML = '';
 
             appData.specsCategories.forEach((cat, catIdx) => {
@@ -714,7 +764,7 @@
                     </button>
                     <div class="subcat-content specs-accordion mt-2.5">
                         <div class="specs-accordion-inner flex flex-col gap-2 pt-2.5 border-t border-white/5">
-                            ${(cat.items || []).map(item => `
+                            ${cat.items.map(item => `
                                 <div class="spec-item-card p-2.5 rounded-lg bg-black/10 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 transition-all cursor-pointer group/item" 
                                      data-copy-val="${item.val}" 
                                      title="Panoya kopyalamak için tıklayın">
@@ -744,18 +794,30 @@
             });
 
             container.querySelectorAll('.spec-item-card').forEach(card => {
-                card.addEventListener('click', (e) => {
+                card.addEventListener('click', async (e) => {
                     e.stopPropagation();
                     const copyText = card.dataset.copyVal;
                     if (!copyText) return;
-                    copyToClipboard(copyText, `Panoya kopyalandı: ${copyText}`);
+
+                    try {
+                        await navigator.clipboard.writeText(copyText);
+                        showToast(`Panoya kopyalandı: ${copyText}`);
+                    } catch (err) {
+                        const dummy = document.createElement('textarea');
+                        dummy.value = copyText;
+                        document.body.appendChild(dummy);
+                        dummy.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(dummy);
+                        showToast(`Panoya kopyalandı: ${copyText}`);
+                    }
                 });
             });
         }
 
         function renderSocials() {
             const container = document.getElementById('socialsContainer');
-            if (!container || !appData || !appData.socials) return;
+            if (!container || !appData) return;
             container.innerHTML = '';
 
             appData.socials.forEach(s => {
@@ -775,10 +837,21 @@
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs text-stone-500 transition-colors"></i>
                 `;
 
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', async () => {
                     if (s.url && s.url.startsWith('copy:')) {
                         const copyVal = s.url.replace('copy:', '');
-                        copyToClipboard(copyVal, `${s.platform} adresi kopyalandı! (${copyVal})`);
+                        try {
+                            await navigator.clipboard.writeText(copyVal);
+                            showToast(`${s.platform} adresi kopyalandı! (${copyVal})`);
+                        } catch (err) {
+                            const dummy = document.createElement('textarea');
+                            dummy.value = copyVal;
+                            document.body.appendChild(dummy);
+                            dummy.select();
+                            document.execCommand('copy');
+                            document.body.removeChild(dummy);
+                            showToast(`${s.platform} adresi kopyalandı! (${copyVal})`);
+                        }
                     } else if (s.url) {
                         window.open(s.url, '_blank');
                     }
@@ -808,10 +881,10 @@
             document.getElementById('btnPlayPauseModal')?.addEventListener('click', toggleMusic);
             
             const rainSlider = document.getElementById('rainVolumeSlider');
-            const rainVolText = document.getElementById('rainVolText');
+            const rainValText = document.getElementById('rainValText');
             rainSlider?.addEventListener('input', (e) => {
                 const val = parseFloat(e.target.value);
-                if (rainVolText) rainVolText.innerText = `${Math.round(val * 100)}%`;
+                if (rainValText) rainValText.innerText = Math.round(val * 100) + '%';
                 if (rainGainNode && audioCtx) {
                     const targetVal = val === 0 ? 0.0 : val;
                     rainGainNode.gain.setValueAtTime(targetVal, audioCtx.currentTime);
@@ -819,10 +892,10 @@
             });
 
             const musicSlider = document.getElementById('musicVolumeSlider');
-            const musicVolText = document.getElementById('musicVolText');
+            const musicValText = document.getElementById('musicValText');
             musicSlider?.addEventListener('input', (e) => {
                 const val = parseFloat(e.target.value);
-                if (musicVolText) musicVolText.innerText = `${Math.round(val * 100)}%`;
+                if (musicValText) musicValText.innerText = Math.round(val * 100) + '%';
                 const bgMusic = document.getElementById('bgMusic');
                 if (bgMusic) bgMusic.volume = val;
             });
@@ -909,7 +982,7 @@
 
                 chevrons.forEach(ch => {
                     if (allSubcatsOpen) ch.classList.add('rotate-180');
-                    else ch.classList.add('rotate-180'); // ensure consistency
+                    else ch.classList.remove('rotate-180');
                 });
 
                 if (btnText) btnText.innerText = allSubcatsOpen ? "Tümünü Kapat" : "Tümünü Aç";
