@@ -25,13 +25,13 @@
       "icon": "fa-microchip",
       "items": [
         { "label": "Anakart", "val": "ASUS Prime B650-Plus" },
-        { "label": "Bellek (RAM)", "val": "2x16GB Corsair Vengeance 6000MHz CL36 DDR5" },
-        { "label": "Ekran Kartı (GPU)", "val": "Sapphire Nitro+ RX 7800 XT" },
+        { "label": "Bellek (RAM)", "val": "2x Corsair Vengeance 6000MHz CL36 DDR5 16GB" },
+        { "label": "Ekran Kartı (GPU)", "val": "AMD Sapphire Nitro+ RX 7800 XT" },
         { "label": "Güç Kaynağı (PSU)", "val": "FSP VITA GM1000W 1000W 80+ Gold" },
         { "label": "İşlemci (CPU)", "val": "AMD Ryzen 5 7500F" },
-        { "label": "Kasa", "val": "Gamepower Warcry" },
+        { "label": "Kasa", "val": "Gamepower Warcry Black" },
         { "label": "Kasa Fanları", "val": "6x Thermalright TL-C12C-S ARGB Black" },
-        { "label": "Sıvı Soğutma", "val": "Bitfenix Cube 360" }
+        { "label": "Sıvı Soğutma", "val": "Bitfenix Cube 360 Black" }
       ]
     },
     {
@@ -41,7 +41,7 @@
       "items": [
         { "label": "1. SSD (NVMe)", "val": "Kingston Renegade 1TB (7300/6000 MB/s)" },
         { "label": "2. SSD (NVMe)", "val": "INTENSO 500GB NVMe" },
-        { "label": "Depolama HDD", "val": "Seagate BarraCuda 2TB (ST2000DM008)" }
+        { "label": "HDD", "val": "Seagate BarraCuda 2TB (ST2000DM008)" }
       ]
     },
     {
@@ -49,11 +49,11 @@
       "title": "Klavye & Çevre Birimleri",
       "icon": "fa-keyboard",
       "items": [
-        { "label": "Çalışma Masası", "val": "Karr Office O-Flex Duo" },
-        { "label": "Fare (Mouse)", "val": "ATK Blazing Sky X1 Ultra White" },
+        { "label": "Masa", "val": "Karr Office O-Flex Duo" },
+        { "label": "Fare", "val": "ATK Blazing Sky X1 Ultra White" },
         { "label": "Klavye", "val": "Darmoshark TOP75" },
         { "label": "Mikrofon", "val": "Lastvoice BM800BT" },
-        { "label": "Oyuncu Koltuğu", "val": "Hawk Fab v6 Stone" }
+        { "label": "Koltuk", "val": "Hawk Fab v6 Stone" }
       ]
     },
     {
@@ -61,8 +61,8 @@
       "title": "Gamepad & Kontrolcüler",
       "icon": "fa-gamepad",
       "items": [
-        { "label": "Ana Gamepad", "val": "Flydigi Apex 4 Elite" },
-        { "label": "İkincil Gamepad", "val": "8BitDo Ultimate C" }
+        { "label": "1. Gamepad", "val": "Flydigi APEX 4" },
+        { "label": "2. Gamepad", "val": "8BitDo Ultimate C" }
       ]
     },
     {
@@ -70,8 +70,8 @@
       "title": "Ses & Kulaklıklar",
       "icon": "fa-headphones",
       "items": [
-        { "label": "Ana Kulaklık", "val": "Skullcandy Crusher Evo Black" },
-        { "label": "Kablosuz Kulaklık", "val": "Anker Soundcore Liberty 4 NC" }
+        { "label": "1. Kulaklık", "val": "Skullcandy Crusher Evo Black" },
+        { "label": "2. Kulaklık", "val": "Anker Soundcore Liberty 4 NC" }
       ]
     },
     {
